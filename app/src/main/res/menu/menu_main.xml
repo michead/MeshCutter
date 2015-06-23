@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/refresh"
+        android:title="Refresh"/>
+
+    <item
+        android:id="@+id/wireframe"
+        android:title="Wireframe"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/normals"
+        android:title="Draw normals"
+        android:checkable="true"/>
+
+</menu>
