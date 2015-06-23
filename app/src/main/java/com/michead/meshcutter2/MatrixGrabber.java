@@ -1,8 +1,7 @@
 package com.michead.meshcutter2;
 
-/**
- * Created by michead on 23/06/15.
- */
+// credits to Google
+
 import javax.microedition.khronos.opengles.GL10;
 
 class MatrixGrabber {

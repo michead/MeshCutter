@@ -18,15 +18,8 @@ import javax.microedition.khronos.opengles.GL10Ext;
 import javax.microedition.khronos.opengles.GL11;
 import javax.microedition.khronos.opengles.GL11Ext;
 
-/**
- * Allows retrieving the current matrix even if the current OpenGL ES
- * driver does not support retrieving the current matrix.
- *
- * Note: the actual matrix may differ from the retrieved matrix, due
- * to differences in the way the math is implemented by GLMatrixWrapper
- * as compared to the way the math is implemented by the OpenGL ES
- * driver.
- */
+// credits to Google
+
 class MatrixTrackingGL implements GL, GL10, GL10Ext, GL11, GL11Ext {
     private GL10 mgl;
     private GL10Ext mgl10Ext;
