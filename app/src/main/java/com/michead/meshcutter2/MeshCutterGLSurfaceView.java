@@ -38,16 +38,9 @@ public class MeshCutterGLSurfaceView extends GLSurfaceView {
             switch (evt.getAction()) {
                 case MotionEvent.ACTION_MOVE:
                 case MotionEvent.ACTION_DOWN:
-                    renderer.rayEndPoints.add(
-                            Utils.getRayEndPoints(
-                                    Utils.getRay(
-                                            currentX,
-                                            currentY,
-                                            renderer.mg,
-                                            renderer.vp
-                                    )
-                            )
-                    );
+                    Utils.Ray ray = Utils.getRay(currentX, currentY, renderer.mg, renderer.vp);
+                    renderer.rayEndPoints.add(Utils.getRayEndPoints(ray));
+                    renderer.hitPoints.addAll(Utils.computeHitPoints(ray, renderer.shapes));
                     break;
                 case MotionEvent.ACTION_UP:
                     state = Utils.STATE.AFTER_CUT;

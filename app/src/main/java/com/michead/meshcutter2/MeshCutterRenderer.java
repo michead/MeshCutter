@@ -19,6 +19,7 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
     public List<Shape3D> shapes;
     public List<float[]> rayEndPoints;
+    public List<float[]> hitPoints;
 
     private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f};
     private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -40,6 +41,7 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
         shapes.add(new Shape3D());
 
         rayEndPoints = new ArrayList<>();
+        hitPoints = new ArrayList<>();
     }
 
     @Override
@@ -99,6 +101,7 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
         // DEBUG draw rays
         Utils.drawRays(gl, rayEndPoints);
+        Utils.drawHitPoints(gl, hitPoints);
 
         gl.glPopMatrix();
     }

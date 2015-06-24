@@ -90,5 +90,6 @@ public class MainActivity extends ActionBarActivity {
         glSurfaceView.renderer.angleY = 0;
 
         glSurfaceView.renderer.rayEndPoints.clear();
+        glSurfaceView.renderer.hitPoints.clear();
     }
 }

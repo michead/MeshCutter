@@ -173,4 +173,117 @@ public class Utils {
 
         gl.glEnable(GL10.GL_LIGHTING);
     }
+
+    public static List<float[]> computeHitPoints(Ray ray, List<Shape3D> shapes){
+        List<float[]> res = new ArrayList<>();
+
+        for(Shape3D shape : shapes){
+            for(int i = 0; i < shape.indices.length; i += 3){
+                float[] hitPoint = checkIntersection(
+                        ray,
+                        shape.vertices[shape.indices[i] * 3],
+                        shape.vertices[shape.indices[i] * 3 + 1],
+                        shape.vertices[shape.indices[i] * 3 + 2],
+                        shape.vertices[shape.indices[i + 1] * 3],
+                        shape.vertices[shape.indices[i + 1] * 3 + 1],
+                        shape.vertices[shape.indices[i + 1] * 3 + 2],
+                        shape.vertices[shape.indices[i + 2] * 3],
+                        shape.vertices[shape.indices[i + 2] * 3 + 1],
+                        shape.vertices[shape.indices[i + 2] * 3 + 2]
+                );
+
+                if(hitPoint != null) res.add(hitPoint);
+            }
+        }
+
+        return res;
+    }
+
+    public static float[] checkIntersection(Ray ray,
+                                            float x1, float y1, float z1,
+                                            float x2, float y2, float z2,
+                                            float x3, float y3, float z3){
+
+        float[] matA = new float[]{
+                x1 - x2, x1 - x3, ray.direction[0],
+                y1 - y2, y1 - y3, ray.direction[1],
+                z1 - z2, z1 - z3, ray.direction[2]
+        };
+
+        float detA = determinant33(matA);
+
+        float[] matB = new float[]{
+                x1 - ray.origin[0], x1 - x3, ray.direction[0],
+                y1 - ray.origin[1], y1 - y3, ray.direction[1],
+                z1 - ray.origin[2], z1 - z3, ray.direction[2]
+        };
+
+        float[] matC = new float[]{
+                x1 - x2, x1 - ray.origin[0], ray.direction[0],
+                y1 - y2, y1 - ray.origin[1], ray.direction[1],
+                z1 - z2, z1 - ray.origin[2], ray.direction[2]
+        };
+
+        float[] matT = new float[]{
+                x1 - x2, x1 - x3, x1 - ray.origin[0],
+                y1 - y2, y1 - y3, y1 - ray.origin[1],
+                z1 - z2, z1 - z3, z1 - ray.origin[2]
+        };
+
+        float beta = determinant33(matB) / detA;
+        float gamma = determinant33(matC) / detA;
+        float alpha = 1 - beta - gamma;
+        float t = determinant33(matT) / detA;
+
+        if (beta + gamma <= 1 && beta >= 0 && gamma >= 0 && t >= 0)
+            return new float[]{
+                    ray.origin[0] + ray.direction[0] * t,
+                    ray.origin[1] + ray.direction[1] * t,
+                    ray.origin[2] + ray.direction[2] * t,
+            };
+
+        return null;
+    }
+
+    public static float determinant33(float[] mat){
+        float det =
+                mat[0] * (mat[4] * mat[8] - mat[5] * mat[7]) -
+                mat[1] * (mat[3] * mat[8] - mat[5] * mat[6]) +
+                mat[2] * (mat[3] * mat[7] - mat[4] * mat[6]);
+
+        return det;
+    }
+
+    public static void drawHitPoints(GL10 gl, final List<float[]> hitPoints){
+        gl.glDisable(GL10.GL_LIGHTING);
+
+        gl.glColor4f(1.f, 0.f, 0.f, 1.f);
+
+
+        byte[] ni = new byte[]{0};
+
+        ByteBuffer niBuffer = ByteBuffer.allocateDirect(1);
+        niBuffer.put(ni);
+        niBuffer.position(0);
+
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+
+        List<float[]> temp = new ArrayList<float[]>(){{ this.addAll(hitPoints); }};
+
+        for (float[] ep : temp){
+            ByteBuffer epb = ByteBuffer.allocateDirect(ep.length * Utils.BYTES_PER_FLOAT);
+            epb.order(ByteOrder.nativeOrder());
+            FloatBuffer epBuffer = epb.asFloatBuffer();
+            epBuffer.put(ep);
+            epBuffer.position(0);
+
+            gl.glVertexPointer(3, GL10.GL_FLOAT, 0, epBuffer);
+
+            gl.glDrawElements(GL10.GL_POINTS, 1, GL10.GL_UNSIGNED_BYTE, niBuffer);
+        }
+
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+
+        gl.glEnable(GL10.GL_LIGHTING);
+    }
 }
