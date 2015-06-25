@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -349,29 +350,39 @@ public class Utils {
         return points_array;
     }
 
-    public static void drawLineAndPoints(GL10 gl, float[] points){
+    public static void drawLineAndPoints(GL10 gl, float[] points) {
         gl.glDisable(GL10.GL_LIGHTING);
         gl.glColor4f(0.f, 0.f, 1.f, 1.f);
         gl.glLineWidth(3.f);
 
-        byte[] indices = new byte[points.length / 3];
-        for(byte i = 0; i < indices.length; i++) indices[i] = i;
+        int offset = 0;
 
-        ByteBuffer vbb = ByteBuffer.allocateDirect(points.length * Utils.BYTES_PER_FLOAT);
-        vbb.order(ByteOrder.nativeOrder());
-        FloatBuffer vertexBuffer = vbb.asFloatBuffer();
-        vertexBuffer.put(points);
-        vertexBuffer.position(0);
+        for(int k = 0; k <= points.length / 126; k++) {
 
-        ByteBuffer indexBuffer = ByteBuffer.allocateDirect(indices.length);
-        indexBuffer.put(indices);
-        indexBuffer.position(0);
+            float[] points2 =
+                    Arrays.copyOfRange(points, offset, Math.min(offset + 126, points.length));
 
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+            byte[] indices = new byte[points2.length / 3];
+            for (byte i = 0; i < indices.length; i++) indices[i] = i;
 
-        gl.glDrawElements(GL10.GL_POINTS, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
-        gl.glDrawElements(GL10.GL_LINE_STRIP, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer.position(0));
+            ByteBuffer vbb = ByteBuffer.allocateDirect(points2.length * Utils.BYTES_PER_FLOAT);
+            vbb.order(ByteOrder.nativeOrder());
+            FloatBuffer vertexBuffer = vbb.asFloatBuffer();
+            vertexBuffer.put(points2);
+            vertexBuffer.position(0);
+
+            ByteBuffer indexBuffer = ByteBuffer.allocateDirect(indices.length);
+            indexBuffer.put(indices);
+            indexBuffer.position(0);
+
+            gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+            gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+
+            gl.glDrawElements(GL10.GL_POINTS, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
+            gl.glDrawElements(GL10.GL_LINE_STRIP, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer.position(0));
+
+            offset += points2.length;
+        }
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 
