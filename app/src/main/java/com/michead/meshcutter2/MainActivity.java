@@ -3,7 +3,9 @@ package com.michead.meshcutter2;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ConfigurationInfo;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +20,8 @@ import javax.microedition.khronos.opengles.GL;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private static final String TAG = "MainActivity";
 
     private MeshCutterGLSurfaceView glSurfaceView;
 
@@ -56,11 +60,29 @@ public class MainActivity extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
         glSurfaceView.onPause();
+
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putBoolean("wireframe", glSurfaceView.renderer.wireframe);
+        editor.putBoolean("rays", glSurfaceView.renderer.drawRays);
+        editor.putBoolean("normals", glSurfaceView.renderer.drawNormals);
+        editor.commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        boolean savedWireframe =
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("wireframe", false);
+        boolean savedNormals =
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("normals", false);
+        boolean savedRays =
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("rays", false);
+
+        menu.getItem(1).setChecked(savedWireframe);
+        menu.getItem(2).setChecked(savedNormals);
+        menu.getItem(3).setChecked(savedRays);
+
         return true;
     }
 
@@ -74,6 +96,8 @@ public class MainActivity extends ActionBarActivity {
             glSurfaceView.renderer.wireframe = !glSurfaceView.renderer.wireframe;
         else if (id == R.id.normals)
             glSurfaceView.renderer.drawNormals = !glSurfaceView.renderer.drawNormals;
+        else if (id == R.id.rays)
+            glSurfaceView.renderer.drawRays = !glSurfaceView.renderer.drawRays;
         else if (id == R.id.refresh) refresh();
 
         return super.onOptionsItemSelected(item);
@@ -91,5 +115,6 @@ public class MainActivity extends ActionBarActivity {
 
         glSurfaceView.renderer.rayEndPoints.clear();
         glSurfaceView.renderer.hitPoints.clear();
+        glSurfaceView.renderer.slPoints = null;
     }
 }

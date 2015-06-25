@@ -3,6 +3,7 @@ package com.michead.meshcutter2;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,14 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
+    private static final String TAG = "MeshCutterRenderer";
+
     private Context context;
 
     public List<Shape3D> shapes;
     public List<float[]> rayEndPoints;
     public List<float[]> hitPoints;
+    public float[] slPoints;
 
     private float[] lightAmbient = {0.5f, 0.5f, 0.5f, 1.0f};
     private float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -27,6 +31,7 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
     public boolean wireframe = false;
     public boolean drawNormals = false;
+    public boolean drawRays = false;
 
     float angleX = 0.f;
     float angleY = 0.f;
@@ -42,6 +47,13 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
         rayEndPoints = new ArrayList<>();
         hitPoints = new ArrayList<>();
+
+        wireframe =
+                PreferenceManager.getDefaultSharedPreferences(context).getBoolean("wireframe", false);
+        drawNormals =
+                PreferenceManager.getDefaultSharedPreferences(context).getBoolean("normals", false);
+        drawRays =
+                PreferenceManager.getDefaultSharedPreferences(context).getBoolean("rays", false);
     }
 
     @Override
@@ -99,9 +111,15 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
         for(Shape3D shape : shapes) shape.draw(gl, wireframe, drawNormals);
 
+        if(wireframe){
+            if(slPoints != null) Utils.drawLineAndPoints(gl, slPoints);
+        }
+
         // DEBUG draw rays
-        Utils.drawRays(gl, rayEndPoints);
-        Utils.drawHitPoints(gl, hitPoints);
+        if(drawRays) {
+            Utils.drawRays(gl, rayEndPoints);
+            Utils.drawHitPoints(gl, hitPoints);
+        }
 
         gl.glPopMatrix();
     }

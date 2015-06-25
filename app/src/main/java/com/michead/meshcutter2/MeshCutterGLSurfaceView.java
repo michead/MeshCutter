@@ -9,6 +9,8 @@ import android.view.MotionEvent;
  */
 public class MeshCutterGLSurfaceView extends GLSurfaceView {
 
+    private static final String TAG = "MeshCutterGLSurfaceView";
+
     MeshCutterRenderer renderer;
 
     private float previousX;
@@ -44,6 +46,8 @@ public class MeshCutterGLSurfaceView extends GLSurfaceView {
                     break;
                 case MotionEvent.ACTION_UP:
                     state = Utils.STATE.AFTER_CUT;
+                    // TODO needs further checks
+                    renderer.slPoints = Utils.computeSliceLinePoints(renderer.hitPoints);
             }
 
         else switch (evt.getAction()) {

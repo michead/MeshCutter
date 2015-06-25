@@ -16,4 +16,9 @@
         android:title="Draw normals"
         android:checkable="true"/>
 
+    <item
+        android:id="@+id/rays"
+        android:title="Draw rays"
+        android:checkable="true"/>
+
 </menu>

@@ -17,13 +17,17 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class Utils {
 
-    public static final String TAG = "Utils";
+    private static final String TAG = "Utils";
 
     public static final int BYTES_PER_FLOAT = 4;
     public static final float TOUCH_SCALE_FACTOR = 180.f / 320.f;
     public static final float Z_DISTANCE = 6.f;
     public static final float NORMAL_SCALE_FACTOR = 0.5f;
     public static final float RAY_LENGTH = 10.f;
+    public static final float UPPERMOST_Y_VALUE = 1.f;
+    public static final float BOTTOMMOST_Y_VALUE = -1.f;
+    public static final float FRONTMOST_Z_VALUE = 1.f;
+    public static final float BACKMOST_Z_VALUE = -1.f;
 
     public enum STATE{ CUT, AFTER_CUT };
 
@@ -284,6 +288,95 @@ public class Utils {
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 
+        gl.glEnable(GL10.GL_LIGHTING);
+    }
+
+    public static float[] computeSliceLinePoints(List<float[]> points){
+        int fb = -1, fu = -1, bb = -1, bu = -1;
+
+        float fb_ = 1.f, fu_ = -1.f, bb_ = 1.f, bu_ = -1.f;
+
+        float[] points_array = new float[points.size() * 3];
+        for(int i = 0; i < points.size(); i++)
+        {
+            points_array[i * 3] = points.get(i)[0];
+            points_array[i * 3 + 1] = points.get(i)[1];
+            points_array[i * 3 + 2] = points.get(i)[2];
+        }
+
+        for(int i = 0; i < points_array.length; i += 3)
+        {
+            if(Math.abs(points_array[i + 2] - 1.f) < 0.1f){
+                points_array[i + 2] = 1.f;
+                if(points_array[i + 1] > fu_)
+                {
+                    fu = i;
+                    fu_ = points_array[i + 1];
+                }
+                if(points_array[i + 1] < fb_)
+                {
+                    fb = i;
+                    fb_ = points_array[i + 1];
+                }
+            }
+            else if(Math.abs(points_array[i + 2] + 1.f) < 0.1f){
+                points_array[i + 2] = -1.f;
+                if(points_array[i + 1] > bu_)
+                {
+                    bu = i;
+                    bu_ = points_array[i + 1];
+                }
+                if(points_array[i + 1] < bb_)
+                {
+                    bb = i;
+                    bb_ = points_array[i + 1];
+                }
+            }
+        }
+
+        for(int i = 0; i < points_array.length; i += 3)
+            Log.d(TAG, points_array[i] + " " + points_array[i + 1] + " " + points_array[i + 2]);
+
+        points_array[fu + 1] = UPPERMOST_Y_VALUE;
+        points_array[fb + 1] = BOTTOMMOST_Y_VALUE;
+
+        points_array[bu + 1] = UPPERMOST_Y_VALUE;
+        points_array[bb + 1] = BOTTOMMOST_Y_VALUE;
+
+
+        Log.d(TAG, fu / 3 + " " + fb / 3 + " " + bu / 3 + " " + bb / 3);
+
+        return points_array;
+    }
+
+    public static void drawLineAndPoints(GL10 gl, float[] points){
+        gl.glDisable(GL10.GL_LIGHTING);
+        gl.glColor4f(0.f, 0.f, 1.f, 1.f);
+        gl.glLineWidth(3.f);
+
+        byte[] indices = new byte[points.length / 3];
+        for(byte i = 0; i < indices.length; i++) indices[i] = i;
+
+        ByteBuffer vbb = ByteBuffer.allocateDirect(points.length * Utils.BYTES_PER_FLOAT);
+        vbb.order(ByteOrder.nativeOrder());
+        FloatBuffer vertexBuffer = vbb.asFloatBuffer();
+        vertexBuffer.put(points);
+        vertexBuffer.position(0);
+
+        ByteBuffer indexBuffer = ByteBuffer.allocateDirect(indices.length);
+        indexBuffer.put(indices);
+        indexBuffer.position(0);
+
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+
+        gl.glDrawElements(GL10.GL_POINTS, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
+        gl.glDrawElements(GL10.GL_LINE_STRIP, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer.position(0));
+
+        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+
+        gl.glColor4f(1.f, 1.f, 1.f, 1.f);
+        gl.glLineWidth(1.f);
         gl.glEnable(GL10.GL_LIGHTING);
     }
 }

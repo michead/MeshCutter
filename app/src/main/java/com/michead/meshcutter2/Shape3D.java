@@ -11,6 +11,8 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class Shape3D {
 
+    private static final String TAG = "Shape3D";
+
     private FloatBuffer vertexBuffer;
     private FloatBuffer normalBuffer;
     private ByteBuffer indexBuffer;
