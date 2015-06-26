@@ -293,10 +293,6 @@ public class Utils {
     }
 
     public static float[] computeSliceLinePoints(List<float[]> points){
-        int fb = -1, fu = -1, bb = -1, bu = -1;
-
-        float fb_ = 1.f, fu_ = -1.f, bb_ = 1.f, bu_ = -1.f;
-
         float[] points_array = new float[points.size() * 3];
         for(int i = 0; i < points.size(); i++)
         {
@@ -304,6 +300,11 @@ public class Utils {
             points_array[i * 3 + 1] = points.get(i)[1];
             points_array[i * 3 + 2] = points.get(i)[2];
         }
+
+        // Too hacky
+        /*
+        int fb = -1, fu = -1, bb = -1, bu = -1;
+        float fb_ = 1.f, fu_ = -1.f, bb_ = 1.f, bu_ = -1.f;
 
         for(int i = 0; i < points_array.length; i += 3)
         {
@@ -346,6 +347,7 @@ public class Utils {
 
 
         Log.d(TAG, fu / 3 + " " + fb / 3 + " " + bu / 3 + " " + bb / 3);
+        */
 
         return points_array;
     }
