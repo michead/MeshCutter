@@ -78,10 +78,13 @@ public class MainActivity extends ActionBarActivity {
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean("normals", false);
         boolean savedRays =
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean("rays", false);
+        boolean savedHitPoints =
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hit_points", false);
 
         menu.getItem(1).setChecked(savedWireframe);
         menu.getItem(2).setChecked(savedNormals);
         menu.getItem(3).setChecked(savedRays);
+        menu.getItem(4).setChecked(savedHitPoints);
 
         return true;
     }
@@ -98,6 +101,8 @@ public class MainActivity extends ActionBarActivity {
             glSurfaceView.renderer.drawNormals = !glSurfaceView.renderer.drawNormals;
         else if (id == R.id.rays)
             glSurfaceView.renderer.drawRays = !glSurfaceView.renderer.drawRays;
+        else if (id == R.id.hit_points)
+            glSurfaceView.renderer.drawHitPoints = !glSurfaceView.renderer.drawHitPoints;
         else if (id == R.id.refresh) refresh();
 
         return super.onOptionsItemSelected(item);

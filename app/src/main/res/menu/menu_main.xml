@@ -21,4 +21,9 @@
         android:title="Draw rays"
         android:checkable="true"/>
 
+    <item
+        android:id="@+id/hit_points"
+        android:title="Draw hit points"
+        android:checkable="true"/>
+
 </menu>

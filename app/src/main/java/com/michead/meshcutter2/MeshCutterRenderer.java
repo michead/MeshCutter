@@ -32,6 +32,7 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
     public boolean wireframe = false;
     public boolean drawNormals = false;
     public boolean drawRays = false;
+    public boolean drawHitPoints = false;
 
     float angleX = 0.f;
     float angleY = 0.f;
@@ -111,9 +112,9 @@ public class MeshCutterRenderer implements GLSurfaceView.Renderer {
 
         for(Shape3D shape : shapes) shape.draw(gl, wireframe, drawNormals);
 
-        if(wireframe){
-            if(slPoints != null) Utils.drawLineAndPoints(gl, slPoints);
-        }
+        if(drawHitPoints)
+            if(slPoints != null && slPoints.length != 0)
+                Utils.drawLineAndPoints(gl, slPoints);
 
         // DEBUG draw rays
         if(drawRays) {
