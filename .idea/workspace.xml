@@ -11,12 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d903b98-bcba-4138-826f-5fed3dfa6688" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/michead/meshcutter2/Utils.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/michead/meshcutter2/Utils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MeshCutter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -101,8 +96,8 @@
       <file leaf-file-name="Utils.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/michead/meshcutter2/Utils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25841185">
-              <caret line="304" column="10" selection-start-line="304" selection-start-column="10" selection-end-line="304" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.7927322">
+              <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2400,8 +2395,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/michead/meshcutter2/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25841185">
-          <caret line="304" column="10" selection-start-line="304" selection-start-column="10" selection-end-line="304" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.7927322">
+          <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

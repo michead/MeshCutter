@@ -25,10 +25,11 @@ public class Utils {
     public static final float Z_DISTANCE = 6.f;
     public static final float NORMAL_SCALE_FACTOR = 0.5f;
     public static final float RAY_LENGTH = 10.f;
-    public static final float UPPERMOST_Y_VALUE = 1.f;
-    public static final float BOTTOMMOST_Y_VALUE = -1.f;
-    public static final float FRONTMOST_Z_VALUE = 1.f;
-    public static final float BACKMOST_Z_VALUE = -1.f;
+
+    // public static final float UPPERMOST_Y_VALUE = 1.f;
+    // public static final float BOTTOMMOST_Y_VALUE = -1.f;
+    // public static final float FRONTMOST_Z_VALUE = 1.f;
+    // public static final float BACKMOST_Z_VALUE = -1.f;
 
     public enum STATE{ CUT, AFTER_CUT };
 
